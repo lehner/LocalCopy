@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
+<plugin id="localcopy" version="2.3">
+	
+	<requires>
+	  <import plugin-id="net.sf.jabref.core"/>
+	</requires>
+	
+	<!-- Will load code and resources from the home folder -->
+	<runtime>
+	  <library type="code" path="./" id="code"/>
+	  <library type="resources" path="./" id="resouces"/>
+	</runtime>
+	
+	<extension id="LocalCopyPane" plugin-id="net.sf.jabref.core"
+		   point-id="SidePanePlugin">
+	  <parameter id="sidePanePlugin"
+		     value="localcopy.LocalCopyPane" />
+	  <parameter id="name" value="Local copy panel" />
+	  <parameter id="description"
+		     value="Automatically download a local copy of an article from the arXiv or from journal
+			    homepages." />
+	</extension>
+	
+</plugin>

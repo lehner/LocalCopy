@@ -1,0 +1,23 @@
+Q:  Where are the downloaded files stored?
+----------------------------------------------------------------------------------------------------
+A:  The plugin saves the files in the main file directory that can be set in the preferences of JabRef.
+    If a per-database specific file directory is set, it is preferred over the global setting.
+    The filename consists of the BibTeX key plus the extension ".pdf".
+
+
+
+Q:  I need to use a proxy server to obtain access to an online journal pdf file.  How do
+    I configure JabRef to use a proxy server?
+----------------------------------------------------------------------------------------------------
+A:  If you want to use, e.g., a SOCKS proxy, run JabRef with the following command line
+
+      java -DsocksProxyHost=host -DsocksProxyPort=port -jar JabRef-X.jar , 
+ 
+    where host and port give the hostname and port number of your SOCKS proxy and X
+    is the JabRef version you are using.
+ 
+    A general documentation that also includes HTTP proxies (and how to specify a username/password) 
+    can be found here: 
+ 
+      http://java.sun.com/j2se/1.5.0/docs/guide/net/properties.html .
+

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+   Based on example ant build file for export.misq plugin and the
+   main JabRef ant build file.
+-->
+<project name="localcopy" default="jars" basedir=".">
+
+	<property name="java.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="build.lib" value="dist" />
+	<property name="build.classes" value="${build.dir}/cls" />
+
+	<property name="jabref.dir" value="../../jabref" />
+
+	<property name="version" value="2.3" />
+	<property name="jar" value="${build.lib}/${ant.project.name}-${version}.jar" />
+
+	<fileset id="pluginFileset" dir="." includes="plugin.xml" />
+
+	<!-- Build classpath -->
+	<path id="classpath">
+		<pathelement path="${build.classes}" />
+		<fileset dir="${jabref.dir}/build/lib" includes="*.jar" />
+	</path>
+
+	<!-- build jabref before building this project, as the jar is needed -->
+	<target name="build.jabref">
+		<ant dir="${jabref.dir}" target="jars" inheritall="false" inheritrefs="false" />
+	</target>
+
+	<!-- compile classes -->
+	<target name="compile">
+		<!-- depends="build.jabref"-->
+		<mkdir dir="${build.classes}" />
+		<javac debug="on" deprecation="on" destdir="${build.classes}" source="1.5" target="1.5">
+			<src path="${java.dir}" />
+			<classpath refid="classpath" />
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+	</target>
+
+	
+	<!-- Jars up project -->
+	<target name="jars" depends="compile">
+		<mkdir dir="${build.lib}" />
+		<jar destfile="${jar}">
+			<fileset dir="${build.classes}" />
+			<fileset refid="pluginFileset" />
+		</jar>
+	</target>
+
+	<target name="clean" description="Clean project">
+		<delete dir="${build.dir}" />
+	</target>
+
+</project>

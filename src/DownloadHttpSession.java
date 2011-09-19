@@ -231,7 +231,7 @@ public class DownloadHttpSession {
 
 	    r = con.getResponseCode();
 
-	    for (i=1;con.getHeaderField(i) != null;i++) {
+	    for (i=1;con.getHeaderField(i) != null && con.getHeaderFieldKey(i) != null;i++) {
 		if (con.getHeaderFieldKey(i).equalsIgnoreCase("set-cookie")) {
 		    //console.output("- cookie received: " + con.getHeaderField(i) + ".\n",false);
 		    cm.setCookie(con.getURL(),con.getHeaderField(i));

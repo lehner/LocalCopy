@@ -262,7 +262,6 @@ public class Download {
 	    if (con.getContentType().toLowerCase().startsWith("application/pdf")) {
 		return true;
 	    }
-
 	} catch (MalformedURLException e) {
 	    console.output("! test for pdf url '" + e.getLocalizedMessage() + "' is malformed.\n",true);
 	} catch (SecurityException e) {
@@ -271,6 +270,7 @@ public class Download {
 	} catch (Exception e) {
 	    console.output("! could not test format of file '" + urlFn + "'.\n",true);
 	    console.output("! " + e.getLocalizedMessage() + "\n",true);
+	    e.printStackTrace();
 	}
 	
 	return false;

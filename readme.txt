@@ -114,3 +114,6 @@ Changelog:
     	       	      	restrictions on all OS to allow for easier
     	       	      	sharing of files.  Add Nicholas Jackson's
     	       	      	patch to recognize application/xhtml.
+
+  * 2011-09-19 - V2.4 - Bug fix in DownloadHttpSession.java:
+    	       	      	getHeaderFieldKey can be null

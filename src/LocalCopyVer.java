@@ -25,7 +25,7 @@
 package localcopy;
 
 public class LocalCopyVer {
-    static String VERSION = "2.3";
+    static String VERSION = "2.4";
     static String DEFPOLICIES = 
 	"www.jstor.org:Text within pdf file:stable%2Fpdfplus\n" +
 	"www.jstor.org:On multiple pdf files:Select+pdf+file+that+contains+a+certain+text\n" +

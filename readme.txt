@@ -117,3 +117,6 @@ Changelog:
 
   * 2011-09-19 - V2.4 - Bug fix in DownloadHttpSession.java:
     	       	      	getHeaderFieldKey can be null
+
+  * 2011-09-23 - V2.5 - Use INSPIRE plugin for CommandUpdate if the
+    	       	      	plugin is available.

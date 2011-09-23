@@ -32,8 +32,12 @@ package localcopy;
 import net.sf.jabref.gui.*;
 import net.sf.jabref.*;
 
-import net.sf.jabref.imports.SPIRESFetcher;
+import net.sf.jabref.plugin.core.JabRefPlugin;
+import net.sf.jabref.plugin.PluginCore;
 import net.sf.jabref.imports.ImportInspector;
+import net.sf.jabref.imports.EntryFetcher;
+import net.sf.jabref.imports.SPIRESFetcher;
+import net.sf.jabref.plugin.core.generated._JabRefPlugin.EntryFetcherExtension;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -203,7 +207,7 @@ public class CommandUpdate implements ProgressDialog.Command, OutputPrinter, Imp
     }
 
     public void showMessage(String string) {
-	console.output("- SPIRES: " + string + "\n", false);
+	console.output("- INSPIRE/SPIRES: " + string + "\n", false);
     }
 
     private boolean checkUpdate(BibtexEntry n,BibtexEntry o,String field) {
@@ -246,6 +250,24 @@ public class CommandUpdate implements ProgressDialog.Command, OutputPrinter, Imp
 	return false;
     }
 
+    private EntryFetcher getFetcherByKey(String key) {
+	JabRefPlugin jabrefPlugin = JabRefPlugin.getInstance(PluginCore.getManager());
+	if (jabrefPlugin != null){
+	    for (EntryFetcherExtension ext : jabrefPlugin.getEntryFetcherExtensions()){
+		try {
+		    EntryFetcher fetcher = ext.getEntryFetcher();
+		    if (fetcher != null) {
+			if (fetcher.getKeyName().equals(key))
+			    return fetcher;
+		    }
+		} catch (ClassCastException ex) {
+		    ex.printStackTrace();
+		}
+	    }
+    	}
+	return null;
+    }
+
     public void run(Component dialog, BasePanel panel, BibtexEntry bes, Console console) {
 	String id = bes.getField("eprint");
 	String xid = "";
@@ -261,12 +283,27 @@ public class CommandUpdate implements ProgressDialog.Command, OutputPrinter, Imp
 	    id = id.substring(6);
 	}
 
+	// find fetcher
+	EntryFetcher f;
+	String prefix = "";
+
+	f = getFetcherByKey("Fetch INSPIRE");
+
+	if (f == null) {
+	    f = new SPIRESFetcher();
+	    prefix = "find ";
+	    console.output("- Using SPIRES (INSPIRE plugin not found)\n",false);
+	} else {
+	    console.output("- Using INSPIRE\n",false);
+	}
+
+	// find entry
 	entry = null;
 	if (id != null) {
 	    xid = "eprint \"" + id + "\"";
 	    console.output("- searching for " + xid + " ...\n",false);
-	    SPIRESFetcher f = new SPIRESFetcher();
-	    f.processQuery("find " + xid,this,this);
+
+	    f.processQuery(prefix + xid,this,this);
 	} else {
 	    console.output("- entry " + key + " has no [eprint] field, trying [doi]...\n",false);
 	}
@@ -276,8 +313,7 @@ public class CommandUpdate implements ProgressDialog.Command, OutputPrinter, Imp
 	    if (id != null) {
 	        xid = "doi \"" + id + "\"";
 	        console.output("- searching for " + xid + " ...\n",false);
-	        SPIRESFetcher f = new SPIRESFetcher();
-	        f.processQuery("find " + xid,this,this);
+	        f.processQuery(prefix + xid,this,this);
 	    } else {
 	        console.output("! entry " + key + " has no [doi] field, quit.\n",true);
 	    }
@@ -396,7 +432,7 @@ public class CommandUpdate implements ProgressDialog.Command, OutputPrinter, Imp
 		}
 	    }
 	} else {
-	    console.output("! entry " + key + " could not be found on SPIRES.\n",true);
+	    console.output("! entry " + key + " could not be found on INSPIRE/SPIRES.\n",true);
 	}
     }
 }

@@ -186,7 +186,7 @@ class LocalCopySidePaneComponent extends SidePaneComponent
 	    btnUpdate.setMinimumSize(butDim);
 	    btnUpdate.addActionListener(this);
 	    btnUpdate.setText("Update fields");
-	    btnUpdate.setToolTipText("Update BibTeX fields from SPIRES.");
+	    btnUpdate.setToolTipText("Update BibTeX fields from INSPIRE/SPIRES.");
 
 	    btnDelete.addActionListener(this);
 	    btnDelete.setToolTipText("Detach the local pdf from the BibTeX entry and delete the local pdf from the filesystem.");

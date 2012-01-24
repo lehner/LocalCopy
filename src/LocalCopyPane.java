@@ -482,9 +482,10 @@ class LocalCopySidePaneComponent extends SidePaneComponent
 
 				MetaData metaData = panel.metaData();
 				if (metaData!=null) {
-				    String dir0 = metaData.getFileDirectory("file");
-				    String dir1 = metaData.getFileDirectory("pdf");
-				    File file = Util.expandFilename(fli[i].fn, new String[] { dir0, dir1, "." });
+				    ArrayList< String > dirs = new ArrayList<String>(Arrays.asList(metaData.getFileDirectory("file")));
+				    dirs.addAll(Arrays.asList(metaData.getFileDirectory("pdf")));
+				    dirs.add(".");
+				    File file = Util.expandFilename(fli[i].fn, (String[])dirs.toArray(new String[0]));
 				    
 				    if ((file == null) || !file.exists()) {
 					frame.showMessage("File " + fli[i].fn + " not found!");

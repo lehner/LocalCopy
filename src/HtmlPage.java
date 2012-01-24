@@ -101,6 +101,7 @@ public class HtmlPage {
     private URL baseURL = null;
     private String logOutLink = null;
     private String title = null;
+    private boolean hasCaptcha = false;
     
     public HtmlPage(DownloadHttpSession session, HttpURLConnection con, Console console) {
 
@@ -156,6 +157,10 @@ public class HtmlPage {
 	return title;
     }
 
+    public boolean hasCaptcha() {
+	return hasCaptcha;
+    }
+
     private static int nr = 0;
 
     private void processConnection(DownloadHttpSession session, HttpURLConnection con, Console console,
@@ -201,8 +206,14 @@ public class HtmlPage {
 	else if (findLoginForm(url, fullHTML) != null) {
 	    console.output("- Warning: multiple login forms detected.\n",false);
 	}
+
+	/*
+	 * Gather further information about site
+	 */
 	title = findTitle(fullHTML);
 	console.output("- Title: " + title + "\n",false);
+	if (!hasCaptcha)
+	    hasCaptcha = siteHasCaptcha(fullHTML);
 	
 	ArrayList<String> frames = parseFrames(url, fullHTML);
 	Iterator<String> it = frames.iterator();
@@ -358,6 +369,13 @@ public class HtmlPage {
 	    }
 	}
 	return frames;
+    }
+
+    // the following is a very naive test for a captcha, improve in the future!
+    private boolean siteHasCaptcha(String fullHTML) { 
+	Pattern pf = Pattern.compile("captcha",Pattern.CASE_INSENSITIVE);
+	Matcher mf = pf.matcher(fullHTML);
+	return mf.find();
     }
 
     private String findTitle(String fullHTML) {

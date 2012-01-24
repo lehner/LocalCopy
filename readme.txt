@@ -120,3 +120,5 @@ Changelog:
 
   * 2011-09-23 - V2.5 - Use INSPIRE plugin for CommandUpdate if the
     	       	      	plugin is available.
+
+  * 2012-01-24 - V2.6 - Fixes compatibility problem with JabRef 2.8b.

@@ -84,17 +84,27 @@ public class Download {
 
     private String getDirFn() {
 
-	String dirFn = null;
+	String[] dirFns = null;
 
 	if (panel != null) {
 	    MetaData md = panel.metaData();
 	    if (md != null) {
-		dirFn = md.getFileDirectory("file");
-		if (dirFn != null && dirFn.length() != 0)
-		    return dirFn;
-		dirFn = md.getFileDirectory("pdf");
-		if (dirFn != null && dirFn.length() != 0)
-		    return dirFn;
+		dirFns = md.getFileDirectory("file");
+		if (dirFns != null && dirFns.length != 0) {
+		    int i;
+		    for (i=0;i<dirFns.length;i++) {
+			if (dirFns[i].length()!=0)
+			    return dirFns[i];
+		    }
+		}
+		dirFns = md.getFileDirectory("pdf");
+		if (dirFns != null && dirFns.length != 0) {
+		    int i;
+		    for (i=0;i<dirFns.length;i++) {
+			if (dirFns[i].length()!=0)
+			    return dirFns[i];
+		    }
+		}
 	    }
 	}
 	
@@ -479,8 +489,14 @@ public class Download {
 
 		if (pdfLinks.length == 0) {
 		    /*
-		     * no pdf link on current page -> if possible: login
+		     * no pdf link on current page:
+		     * - if captcha is present, request user input
+		     * - if no captcha is present try login form
 		     */
+		    if (page.hasCaptcha()) {
+			console.output("- Site has CAPTCHA.  Request user input.\n",false);
+		    }
+
 		    if (lf != null && !stateLoggedIn) {
 			stateLoggedIn = true;
 			console.output("- No PDF link found but log in form available.  Try to log in.\n",false);

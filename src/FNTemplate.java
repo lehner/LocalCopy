@@ -55,7 +55,8 @@ public class FNTemplate {
     private static String getKey(BasePanel panel, BibtexEntry b) {
 	String k = b.getField(BibtexFields.KEY_FIELD);
 	if (k == null || k.length()==0) {
-	    LabelPatternUtil.makeLabel(Globals.prefs.getKeyPattern(), panel.database(), b);
+	    /* Globals.prefs.getKeyPattern() */
+	    LabelPatternUtil.makeLabel(new MetaData(), panel.database(), b);
 	    k = b.getField(BibtexFields.KEY_FIELD);
 	    b.setField(BibtexFields.KEY_FIELD,"");
 	    
